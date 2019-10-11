@@ -17,3 +17,6 @@
 [submodule "keyboards/ergodash/mini/keymaps/illness072"]
 	path = keyboards/ergodash/mini/keymaps/illness072
 	url = git@github.com:illness072/ergodashmini-keymap.git
+[submodule "keyboards/claw44/keymaps/illness072"]
+	path = keyboards/claw44/keymaps/illness072
+	url = git@github.com:illness072/claw44-keymap.git
