@@ -14,3 +14,6 @@
 [submodule "lib/lufa"]
 	path = lib/lufa
 	url = https://github.com/qmk/lufa
+[submodule "keyboards/claw44/keymaps/illness072"]
+	path = keyboards/claw44/keymaps/illness072
+	url = git@github.com:illness072/claw44-keymap.git
