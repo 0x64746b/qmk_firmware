@@ -14,3 +14,6 @@
 [submodule "lib/lufa"]
 	path = lib/lufa
 	url = https://github.com/qmk/lufa
+[submodule "keyboards/ergodash/mini/keymaps/illness072"]
+	path = keyboards/ergodash/mini/keymaps/illness072
+	url = git@github.com:illness072/ergodashmini-keymap.git
