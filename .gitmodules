@@ -20,3 +20,6 @@
 [submodule "keyboards/claw44/keymaps/illness072"]
 	path = keyboards/claw44/keymaps/illness072
 	url = git@github.com:illness072/claw44-keymap.git
+[submodule "keyboards/egp"]
+	path = keyboards/egp
+	url = git@github.com:illness072/egp.git
