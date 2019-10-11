@@ -23,3 +23,6 @@
 [submodule "keyboards/egp"]
 	path = keyboards/egp
 	url = git@github.com:illness072/egp.git
+[submodule "keyboards/elephant44"]
+	path = keyboards/elephant44
+	url = git@github.com:illness072/elephant44-firmware.git
