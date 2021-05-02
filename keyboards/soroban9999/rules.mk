@@ -25,4 +25,4 @@ ENCODER_ENABLE = yes # enable rotary encoder
 CUSTOM_MATRIX = lite # duplex matrix
 SRC += matrix.c
 
-VIA_ENABLE = no
+VIA_ENABLE = yes

@@ -21,13 +21,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID    0x4649
-#define PRODUCT_ID   0x0722
+#define PRODUCT_ID   0x0723
 #define DEVICE_VER   0x0001
 #define MANUFACTURER illness072
-#define PRODUCT      numpad20
+#define PRODUCT      soroban9999
 
 /* key matrix size */
-#define MATRIX_ROWS 6
+#define MATRIX_ROWS 8
 #define MATRIX_COLS 4
 
 /*
@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
  */
-#define MATRIX_ROW_PINS { F4, F5, F6 }
+#define MATRIX_ROW_PINS { F4, F5, F6, D2 }
 #define MATRIX_COL_PINS { F7, B1, B3, B2 }
 #define UNUSED_PINS
 

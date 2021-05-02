@@ -24,26 +24,14 @@ enum layer_names {
     _Fn4
 };
 
-enum encoder_number {
-    _1ST_ENC = 0,
-    _2ND_ENC,
-    _3RD_ENC,
-    _4TH_ENC,
-    _5TH_ENC,
-};
-
-#define _1ST_ENC_L KC_MINS
-#define _1ST_ENC_R KC_EQL
-#define _2ND_ENC_L A(KC_LBRC)
-#define _2ND_ENC_R A(KC_RBRC)
-#define _3RD_ENC_L LCMD(KC_Z)
-#define _3RD_ENC_R LCMD(S(KC_Z))
-#define _4TH_ENC_L LCMD(KC_MINS)
-#define _4TH_ENC_R LCMD(KC_PLUS)
+#define _ROTALY_L 3
+#define _ROTALY_R 7
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
-        G(S(KC_0)), KC_Z, KC_A, LCMD(KC_0),
+        KC__VOLDOWN,KC_BRMD,LCMD(KC_Z)   ,LCMD(KC_MINS),
+        KC__VOLUP  ,KC_BRMU,LCMD(S(KC_Z)),LCMD(KC_PLUS),
+        KC_MUTE, XXXXXXX, XXXXXXX, LCMD(KC_0),
         KC_P7  , KC_P8  , KC_P9  , LT(_Fn4, KC_PSLS),
         KC_P4  , KC_P5  , KC_P6  , LT(_Fn3, KC_PAST),
         KC_P1  , KC_P2  , KC_P3  , LT(_Fn2, KC_PMNS),
@@ -51,12 +39,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_Fn1] = LAYOUT(
         _______, _______, _______, _______,
+        _______, _______, _______, _______,
+        _______, _______, _______, _______,
         KC_ESC , _______, _______, XXXXXXX,
         KC_DEL , KC_BSPC, _______, XXXXXXX,
         KC_TAB , _______, KC_COLN, XXXXXXX,
-        KC_PENT, KC_SPC,  KC_PCMM, XXXXXXX
+        KC_PENT, KC_SPC,  KC_COMM, XXXXXXX
     ),
     [_Fn2] = LAYOUT(
+        _______, _______, _______, _______,
+        _______, _______, _______, _______,
         _______, _______, _______, _______,
         _______, KC_LABK, KC_RABK, XXXXXXX,
         _______, KC_LCBR, KC_RCBR, XXXXXXX,
@@ -65,12 +57,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_Fn3] = LAYOUT(
         _______, _______, _______, _______,
+        _______, _______, _______, _______,
+        _______, _______, _______, _______,
         KC_HOME, KC_UP  , KC_PGUP, XXXXXXX,
         KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX,
         KC_END , KC_DOWN, KC_PGDN, XXXXXXX,
         _______, KC_INS , _______, XXXXXXX
     ),
     [_Fn4] = LAYOUT(
+        _______, _______, _______, _______,
+        _______, _______, _______, _______,
         _______, _______, _______, _______,
         RGB_TOG, RGB_MOD, RGB_RMOD, XXXXXXX,
         KC_D   , KC_E   , KC_F   , XXXXXXX,
@@ -80,40 +76,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    }
     return true;
 }
 
 void encoder_update_user(uint8_t index, bool clockwise) {
-  switch (index) {
-  case _1ST_ENC:
-    if (clockwise) {
-      tap_code16(_1ST_ENC_R);
-    } else {
-      tap_code16(_1ST_ENC_L);
-    }
-    break;
-  case _2ND_ENC:
-    if (clockwise) {
-      tap_code16(_2ND_ENC_R);
-    } else {
-      tap_code16(_2ND_ENC_L);
-    }
-    break;
-  case _3RD_ENC:
-    if (clockwise) {
-      tap_code16(_3RD_ENC_R);
-    } else {
-      tap_code16(_3RD_ENC_L);
-    }
-    break;
-  case _4TH_ENC:
-    if (clockwise) {
-      tap_code16(_4TH_ENC_R);
-    } else {
-      tap_code16(_4TH_ENC_L);
-    }
-    break;
-  }
+  int duration = clockwise ? _ROTALY_R : _ROTALY_L;
+
+#ifdef VIA_ENABLE
+  uint16_t keycode = dynamic_keymap_get_keycode(get_highest_layer(layer_state),duration,index);
+#else
+  uint16_t keycode = pgm_read_word(&keymaps[get_highest_layer(layer_state)][duration][index]);
+#endif
+
+#ifdef CONSOLE_ENABLE
+  uprintf("EN: index: %u, clockwise: %u, layer: %u, key: %lu\n",
+          index, clockwise, get_highest_layer(layer_state), keycode);
+#endif
+
+  tap_code16(keycode);
 }
