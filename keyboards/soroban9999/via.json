@@ -2,6 +2,7 @@
     "name": "soroban9999",
     "vendorId": "0x4649",
     "productId": "0x0723",
+    "lighting": "qmk_rgblight",
     "matrix": { "rows": 8, "cols": 4 },
     "layouts": {
         "keymap": [
