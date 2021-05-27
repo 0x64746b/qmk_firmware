@@ -75,6 +75,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGB_MATRIX_ENABLE
 #    define SPLIT_TRANSPORT_MIRROR
 #    define DRIVER_LED_TOTAL RGBLED_NUM
+#    define RGB_MATRIX_SPLIT RGBLED_SPLIT
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS RGBLIGHT_LIMIT_VAL
 /*
 #    define RGB_MATRIX_HUE_STEP RGBLIGHT_HUE_STEP
@@ -82,8 +83,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_VAL_STEP RGBLIGHT_VAL_STEP
 #    define RGB_MATRIX_SPD_STEP 8
 */
-//#    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
-//#    define RGB_MATRIX_KEYPRESSES  // reacts to keypresses
+#    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#    define RGB_MATRIX_KEYPRESSES  // reacts to keypresses
 //#    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_TYPING_HEATMAP
 #else  // RGBLIGHT_ENABLE
 #    define RGBLIGHT_ANIMATIONS
