@@ -61,6 +61,8 @@ enum custom_keycodes {
 #define KC_LVAD RGB_VAD
 #define KC_LSAI RGB_SAI
 #define KC_LSAD RGB_SAD
+#define KC_LSPI RGB_SPI
+#define KC_LSPD RGB_SPD
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -92,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
          , F1 , F2 , F3 , F4 , F5 ,                          F6 , F7 , F8 , F9 ,F10 ,F11 ,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-         ,LTOG,LMOF,LVAI,LHUI,LSAI,                         LEFT,DOWN, UP ,RGHT,    ,F12 ,
+         ,LTOG,LMOF,LVAI,LHUI,LSAI,                         LEFT,DOWN, UP ,RGHT,LSPI,F12 ,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          LRST,LMOP,LVAD,LHUD,LSAD,                         HOME,PGDN,PGUP,END ,    ,
+          LRST,LMOP,LVAD,LHUD,LSAD,                         HOME,PGDN,PGUP,END ,LSPD,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----+----'
                          LALT,LCMD,    ,LSFT,     CDEL,    ,SENT,ABSP
   //                    `----+----+----+----'    `----+----+----+----'

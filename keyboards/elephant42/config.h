@@ -73,21 +73,65 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_VAL_STEP 8
 
 #ifdef RGB_MATRIX_ENABLE
-#    define SPLIT_TRANSPORT_MIRROR
-#    define DRIVER_LED_TOTAL RGBLED_NUM
-#    define RGB_MATRIX_SPLIT RGBLED_SPLIT
-#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS RGBLIGHT_LIMIT_VAL
-/*
-#    define RGB_MATRIX_HUE_STEP RGBLIGHT_HUE_STEP
-#    define RGB_MATRIX_SAT_STEP RGBLIGHT_SAT_STEP
-#    define RGB_MATRIX_VAL_STEP RGBLIGHT_VAL_STEP
-#    define RGB_MATRIX_SPD_STEP 8
-*/
-#    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
-#    define RGB_MATRIX_KEYPRESSES  // reacts to keypresses
+#  define SPLIT_TRANSPORT_MIRROR
+#  define DRIVER_LED_TOTAL RGBLED_NUM
+#  define RGB_MATRIX_SPLIT RGBLED_SPLIT
+#  define RGB_MATRIX_MAXIMUM_BRIGHTNESS RGBLIGHT_LIMIT_VAL
+#  define RGB_MATRIX_HUE_STEP RGBLIGHT_HUE_STEP
+#  define RGB_MATRIX_SAT_STEP RGBLIGHT_SAT_STEP
+#  define RGB_MATRIX_VAL_STEP RGBLIGHT_VAL_STEP
+#  define RGB_MATRIX_SPD_STEP 8
+
+//#  define DISABLE_RGB_MATRIX_SOLID_COLOR
+#  define DISABLE_RGB_MATRIX_ALPHAS_MODS         // よくわからない
+#  define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN    // 動かない虹(上下)
+#  define DISABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT // 動かない虹(左右)
+#  define DISABLE_RGB_MATRIX_BREATHING           // 点滅
+#  define DISABLE_RGB_MATRIX_BAND_SAT            // 白地に赤ラベル(左右)
+#  define DISABLE_RGB_MATRIX_BAND_VAL            // 赤ラベル(左右)
+#  define DISABLE_RGB_MATRIX_BAND_PINWHEEL_SAT   // 白地に赤ラベル(回転)
+#  define DISABLE_RGB_MATRIX_BAND_PINWHEEL_VAL   // 赤ラベル(回転)
+#  define DISABLE_RGB_MATRIX_BAND_SPIRAL_SAT     // 白地に赤ラベル(回転)
+#  define DISABLE_RGB_MATRIX_BAND_SPIRAL_VAL     // 赤ラベル(回転)
+#  define DISABLE_RGB_MATRIX_CYCLE_ALL           // 虹(左右)
+//#  define DISABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT    // 虹(左右)
+//#  define DISABLE_RGB_MATRIX_CYCLE_UP_DOWN       // 虹(上下)
+#  define DISABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON // 虹(左右)
+#  define DISABLE_RGB_MATRIX_CYCLE_OUT_IN           // 虹(外内)
+#  define DISABLE_RGB_MATRIX_CYCLE_OUT_IN_DUAL      // 虹(2点)
+//#  define DISABLE_RGB_MATRIX_CYCLE_PINWHEEL         // 虹(回転)
+#  define DISABLE_RGB_MATRIX_CYCLE_SPIRAL           // 虹(回転)
+#  define DISABLE_RGB_MATRIX_DUAL_BEACON            // 虹(逆回転)
+#  define DISABLE_RGB_MATRIX_RAINBOW_BEACON         // 虹(逆回転)
+#  define DISABLE_RGB_MATRIX_RAINBOW_PINWHEELS      // 虹(2点)
+#  define DISABLE_RGB_MATRIX_RAINDROPS              // 虹(ランダム)
+#  define DISABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS    // 虹(ランダム・白)
+#  define DISABLE_RGB_MATRIX_HUE_BREATHING          // 色相変化(全体)
+#  define DISABLE_RGB_MATRIX_HUE_PENDULUM           // 色相変化(左右)
+#  define DISABLE_RGB_MATRIX_HUE_WAVE               // 色相変化(左右)
+//#  define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#  ifdef RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#    define DISABLE_RGB_MATRIX_TYPING_HEATMAP // ヒートマップ
+#    define DISABLE_RGB_MATRIX_DIGITAL_RAIN   // アニメ
+#  endif
+#  define RGB_MATRIX_KEYPRESSES
+#  ifdef RGB_MATRIX_KEYPRESSES
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE // 押したキーが光る
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE        // 押したキーが白く光る
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_WIDE   // 押したキー周辺が光る
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE  // 押したキー周辺が光る
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS      // 押したキー周辺が光る
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTICROSS // 押したキー周辺が光る
+#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS      // 押したキー周辺が光る
+//#    define DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS // 押したキー周辺が光る
+#    define DISABLE_RGB_MATRIX_SPLASH       // 押したキーから虹
+//#    define DISABLE_RGB_MATRIX_MULTISPLASH // 押したキーから虹
+#    define DISABLE_RGB_MATRIX_SOLID_SPLASH // 押したキーからグラデーション
+//#    define DISABLE_RGB_MATRIX_SOLID_MULTISPLASH // 押したキーからグラデーション
+#  endif
 //#    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_TYPING_HEATMAP
 #else  // RGBLIGHT_ENABLE
-#    define RGBLIGHT_ANIMATIONS
+#  define RGBLIGHT_ANIMATIONS
 #endif
 
 // #define RGB_DI_PIN E2
