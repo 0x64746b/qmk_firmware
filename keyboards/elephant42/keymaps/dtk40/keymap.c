@@ -29,6 +29,8 @@ enum custom_keycodes {
     RAISE,
     KC_LRST,
     WM_EXPOSEE,
+    WM_PREV_DESK,
+    WM_NEXT_DESK,
 };
 
 #define KC_LOW LOWER
@@ -85,15 +87,9 @@ enum custom_keycodes {
 #define KC_SPC_ LT(NUM_ARR, KC_SPC)
 #define KC_DEL_ LT(FN_NAV, KC_DEL)
 #define KC_ENT_ LT(FN_NAV, KC_ENT)
-#define KC_LXP LT(WM_NIX, WM_EXPOSEE)
-#define KC_LPRV LCA(KC_UP)
-#define KC_LNXT LCA(KC_DOWN)
-#define KC_AXP LT(WM_OSX, WM_EXPOSEE)
-#define KC_APRV LCTL(KC_LEFT)
-#define KC_ANXT LCTL(KC_RGHT)
-#define KC_WXP LT(WM_WIN, WM_EXPOSEE)
-#define KC_WPRV LCTL(LGUI(KC_LEFT))
-#define KC_WNXT LCTL(LGUI(KC_RGHT))
+#define KC_WM LT(WM, WM_EXPOSEE)
+#define KC_PRVD WM_PREV_DESK
+#define KC_NXTD WM_NEXT_DESK
 
 // Layer declarations
 enum {
@@ -106,9 +102,7 @@ enum {
   SYMBLS,
   GRV_BRC,
   TLD_CBR,
-  WM_NIX,
-  WM_OSX,
-  WM_WIN,
+  WM,
   NUM_BLK,
   LAY_LIT,
 
@@ -124,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
            Z_ , X  , C  , D_ , V  ,                          K  , H_ ,COMM,DOT ,SLSH,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         LXP ,BSP_,DEL_,XXXX,     XXXX,ENT_,SPC_,ALGR
+                          WM ,BSP_,DEL_,XXXX,     XXXX,ENT_,SPC_,ALGR
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -136,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         AXP ,____,____,____,     ____,____,____,____
+                         ____,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -148,7 +142,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         WXP ,____,____,____,     ____,____,____,____
+                         ____,____,____,____,     ____,____,____,____
 
   //                    `----+----+----+----'    `----+----+----+----'
   ),
@@ -225,11 +219,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
-  [WM_NIX] = LAYOUT_kc( \
+
+  [WM] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
      ____,____,____,____,____,____,                         ____,____,____,____,____,____,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         ____,LNXT,LPRV,____,____,____,
+     ____,____,____,____,____,____,                         PRVD,NXTD,PRVD,NXTD,____,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
@@ -237,29 +232,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
-  [WM_OSX] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         APRV,____,____,ANXT,____,____,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         ____,____,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
-
-  [WM_WIN] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         WPRV,____,____,WNXT,____,____,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         ____,____,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
 
   [NUM_BLK] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
@@ -299,25 +271,63 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-  case LT(WM_NIX, WM_EXPOSEE):
+  case LT(WM, WM_EXPOSEE):
     if (record->tap.count && record->event.pressed) {
+      if (layer_state_is(CM_NIX)) {
         tap_code(KC_LGUI);
-        return false;
-    }
-    break;
-  case LT(WM_OSX, WM_EXPOSEE):
-    if (record->tap.count && record->event.pressed) {
-      register_code(KC_LCTL);
-      tap_code(KC_UP);
-      unregister_code(KC_LCTL);
+      } else if (layer_state_is(CM_OSX)) {
+        register_code(KC_LCTL);
+        tap_code(KC_UP);
+        unregister_code(KC_LCTL);
+      } else if (layer_state_is(CM_WIN)) {
+        register_code(KC_LGUI);
+        tap_code(KC_TAB);
+        unregister_code(KC_LGUI);
+      }
       return false;
     }
     break;
-  case LT(WM_WIN, WM_EXPOSEE):
-    if (record->tap.count && record->event.pressed) {
-      register_code(KC_LGUI);
-      tap_code(KC_TAB);
-      unregister_code(KC_LGUI);
+  case WM_PREV_DESK:
+    if (record->event.pressed) {
+      if (layer_state_is(CM_NIX)) {
+        register_code(KC_LCTL);
+        register_code(KC_LALT);
+        tap_code(KC_UP);
+        unregister_code(KC_LALT);
+        unregister_code(KC_LCTL);
+      } else if (layer_state_is(CM_OSX)) {
+        register_code(KC_LCTL);
+        tap_code(KC_LEFT);
+        unregister_code(KC_LCTL);
+      } else if (layer_state_is(CM_WIN)) {
+        register_code(KC_LCTL);
+        register_code(KC_LGUI);
+        tap_code(KC_LEFT);
+        unregister_code(KC_LGUI);
+        unregister_code(KC_LCTL);
+      }
+      return false;
+    }
+    break;
+  case WM_NEXT_DESK:
+    if (record->event.pressed) {
+      if (layer_state_is(CM_NIX)) {
+        register_code(KC_LCTL);
+        register_code(KC_LALT);
+        tap_code(KC_DOWN);
+        unregister_code(KC_LALT);
+        unregister_code(KC_LCTL);
+      } else if (layer_state_is(CM_OSX)) {
+        register_code(KC_LCTL);
+        tap_code(KC_RGHT);
+        unregister_code(KC_LCTL);
+      } else if (layer_state_is(CM_WIN)) {
+        register_code(KC_LCTL);
+        register_code(KC_LGUI);
+        tap_code(KC_RGHT);
+        unregister_code(KC_LGUI);
+        unregister_code(KC_LCTL);
+      }
       return false;
     }
     break;
