@@ -27,7 +27,8 @@ enum custom_keycodes {
     QWERTY = SAFE_RANGE,
     LOWER,
     RAISE,
-    KC_LRST
+    KC_LRST,
+    WM_EXPOSEE,
 };
 
 #define KC_LOW LOWER
@@ -78,19 +79,19 @@ enum custom_keycodes {
 #define KC_G_ LT(NUM_BLK, KC_G)
 #define KC_M_ LT(NUM_BLK, KC_M)
 #define KC_Z_ LT(LAY_LIT, KC_Z)
-#define KC_C0 LT(WM_NIX, KC_C)
-#define KC_C1 LT(WM_OSX, KC_C)
-#define KC_C2 LT(WM_WIN, KC_C)
 #define KC_D_ LT(SYMBLS, KC_D)
 #define KC_H_ LT(SYMBLS, KC_H)
 #define KC_BSP_ LT(NUM_ARR, KC_BSPC)
 #define KC_SPC_ LT(NUM_ARR, KC_SPC)
 #define KC_DEL_ LT(FN_NAV, KC_DEL)
 #define KC_ENT_ LT(FN_NAV, KC_ENT)
+#define KC_LXP LT(WM_NIX, WM_EXPOSEE)
 #define KC_LPRV LCA(KC_UP)
 #define KC_LNXT LCA(KC_DOWN)
+#define KC_AXP LT(WM_OSX, WM_EXPOSEE)
 #define KC_APRV LCTL(KC_LEFT)
 #define KC_ANXT LCTL(KC_RGHT)
+#define KC_WXP LT(WM_WIN, WM_EXPOSEE)
 #define KC_WPRV LCTL(LGUI(KC_LEFT))
 #define KC_WNXT LCTL(LGUI(KC_RGHT))
 
@@ -121,9 +122,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
      ESC , A_ , R_ , S_ , T_ , G_ ,                          M_ , N_ , E_ , I_ , O_ ,QUOT,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-           Z_ , X  , C0 , D_ , V  ,                          K  , H_ ,COMM,DOT ,SLSH,
+           Z_ , X  , C  , D_ , V  ,                          K  , H_ ,COMM,DOT ,SLSH,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         F24 ,BSP_,DEL_,XXXX,     XXXX,ENT_,SPC_,ALGR
+                         LXP ,BSP_,DEL_,XXXX,     XXXX,ENT_,SPC_,ALGR
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -133,9 +134,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
      ____,____,____,____,____,____,                         ____,____,____,____,____,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____, C1 ,____,____,                         ____,____,____,____,____,
+          ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         F24 ,____,____,____,     ____,____,____,____
+                         AXP ,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -145,9 +146,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
      ____,____,____,____,____,____,                         ____,____,____,____,____,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____, C2 ,____,____,                         ____,____,____,____,____,
+          ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         F24 ,____,____,____,     ____,____,____,____
+                         WXP ,____,____,____,     ____,____,____,____
+
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -287,23 +289,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-  case KC_F24:
-      if (record->event.pressed) {
-          if (layer_state_is(CM_NIX)) {
-              tap_code(KC_LGUI);
-          } else if (layer_state_is(CM_OSX)) {
-              register_code(KC_LCTL);
-              tap_code(KC_UP);
-              unregister_code(KC_LCTL);
-          } else if (layer_state_is(CM_WIN)) {
-              register_code(KC_LGUI);
-              tap_code(KC_TAB);
-              unregister_code(KC_LGUI);
-          } else {
-              return true;
-          }
-      }
+  case LT(WM_NIX, WM_EXPOSEE):
+    if (record->tap.count && record->event.pressed) {
+        tap_code(KC_LGUI);
+        return false;
+    }
+    break;
+  case LT(WM_OSX, WM_EXPOSEE):
+    if (record->tap.count && record->event.pressed) {
+      register_code(KC_LCTL);
+      tap_code(KC_UP);
+      unregister_code(KC_LCTL);
       return false;
+    }
+    break;
+  case LT(WM_WIN, WM_EXPOSEE):
+    if (record->tap.count && record->event.pressed) {
+      register_code(KC_LGUI);
+      tap_code(KC_TAB);
+      unregister_code(KC_LGUI);
+      return false;
+    }
+    break;
   case KC_LRST:
     if (record->event.pressed) {
 #ifdef RGBLIGHT_ENABLE
