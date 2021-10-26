@@ -19,7 +19,9 @@
 // place overrides here
 
 #define IGNORE_MOD_TAP_INTERRUPT
+#define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM 192
+#define TAPPING_TERM_SFT 160
 
 // place overrides here
 #ifdef OLED_DRIVER_ENABLE
