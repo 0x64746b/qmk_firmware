@@ -87,13 +87,10 @@ enum custom_keycodes {
 #define KC_SPC_ LT(NUM_ARR, KC_SPC)
 #define KC_DEL_ LT(FN_NAV, KC_DEL)
 #define KC_ENT_ LT(FN_NAV, KC_ENT)
-#define KC_LXP KC_LGUI
 #define KC_LPRV LCA(KC_UP)
 #define KC_LNXT LCA(KC_DOWN)
-#define KC_AXP LCTL(KC_UP)
 #define KC_APRV LCTL(KC_LEFT)
 #define KC_ANXT LCTL(KC_RGHT)
-#define KC_WXP LGUI(KC_TAB)
 #define KC_WPRV LCTL(LGUI(KC_LEFT))
 #define KC_WNXT LCTL(LGUI(KC_RGHT))
 
@@ -126,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
            Z_ , X  , C0 , D_ , V  ,                          K  , H_ ,COMM,DOT ,SLSH,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         LXP ,BSP_,DEL_,XXXX,     XXXX,ENT_,SPC_,ALGR
+                         F24 ,BSP_,DEL_,XXXX,     XXXX,ENT_,SPC_,ALGR
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -138,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____, C1 ,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         AXP ,____,____,____,     ____,____,____,____
+                         F24 ,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -150,7 +147,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____, C2 ,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         WXP ,____,____,____,     ____,____,____,____
+                         F24 ,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -290,6 +287,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+  case KC_F24:
+      if (record->event.pressed) {
+          if (layer_state_is(CM_NIX)) {
+              tap_code(KC_LGUI);
+          } else if (layer_state_is(CM_OSX)) {
+              register_code(KC_LCTL);
+              tap_code(KC_UP);
+              unregister_code(KC_LCTL);
+          } else if (layer_state_is(CM_WIN)) {
+              register_code(KC_LGUI);
+              tap_code(KC_TAB);
+              unregister_code(KC_LGUI);
+          } else {
+              return true;
+          }
+      }
+      return false;
   case KC_LRST:
     if (record->event.pressed) {
 #ifdef RGBLIGHT_ENABLE
