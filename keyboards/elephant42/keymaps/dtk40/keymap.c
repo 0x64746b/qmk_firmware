@@ -22,12 +22,27 @@
 uint8_t kp = 0;
 #endif
 
+enum window_manager {
+    GNOME_3 = 0,
+    GNOME_40,
+    OSX,
+    WIN_10,
+
+    NUM_SUPPORTED_WMS,
+};
+
+enum window_manager selected_wm = GNOME_3;
+
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
     QWERTY = SAFE_RANGE,
     LOWER,
     RAISE,
     KC_LRST,
+    WM_GNOME_3,
+    WM_GNOME_40,
+    WM_OSX,
+    WM_WIN_10,
     WM_EXPOSEE,
     WM_PREV_DESK,
     WM_NEXT_DESK,
@@ -87,15 +102,17 @@ enum custom_keycodes {
 #define KC_SPC_ LT(NUM_ARR, KC_SPC)
 #define KC_DEL_ LT(FN_NAV, KC_DEL)
 #define KC_ENT_ LT(FN_NAV, KC_ENT)
+#define KC_GNM3 WM_GNOME_3
+#define KC_GNM4 WM_GNOME_40
+#define KC_OSX WM_OSX
+#define KC_WIN WM_WIN_10
 #define KC_WM LT(WM, WM_EXPOSEE)
 #define KC_PRVD WM_PREV_DESK
 #define KC_NXTD WM_NEXT_DESK
 
 // Layer declarations
 enum {
-  CM_NIX = 0,
-  CM_OSX,
-  CM_WIN,
+  COLEMK = 0,
   QWERTY_,
   NUM_ARR,
   FN_NAV,
@@ -110,7 +127,7 @@ enum {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [CM_NIX] = LAYOUT_kc( \
+  [COLEMK] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
      TAB , Q  , W  , F_ , P_ , B  ,                          J  , L_ , U_ , Y  ,SCLN,BSLS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
@@ -122,30 +139,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
-  [CM_OSX] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         ____,____,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
-
-  [CM_WIN] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         ____,____,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
-
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
 
   [QWERTY_] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
@@ -222,7 +215,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [WM] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____,____,____,____,                         ____,____,____,____,____,____,
+     GNM3,GNM4,OSX ,WIN ,____,____,                         ____,____,____,____,____,____,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
      ____,____,____,____,____,____,                         PRVD,NXTD,PRVD,NXTD,____,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
@@ -271,15 +264,35 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+  case WM_GNOME_3:
+    if (record->event.pressed) {
+        selected_wm=GNOME_3;
+    }
+    return false;
+  case WM_GNOME_40:
+    if (record->event.pressed) {
+        selected_wm=GNOME_40;
+    }
+    return false;
+  case WM_OSX:
+    if (record->event.pressed) {
+        selected_wm=OSX;
+    }
+    return false;
+  case WM_WIN_10:
+    if (record->event.pressed) {
+        selected_wm=WIN_10;
+    }
+    return false;
   case LT(WM, WM_EXPOSEE):
     if (record->tap.count && record->event.pressed) {
-      if (layer_state_is(CM_NIX)) {
+      if (selected_wm == GNOME_3 || selected_wm == GNOME_40) {
         tap_code(KC_LGUI);
-      } else if (layer_state_is(CM_OSX)) {
+      } else if (selected_wm == OSX) {
         register_code(KC_LCTL);
         tap_code(KC_UP);
         unregister_code(KC_LCTL);
-      } else if (layer_state_is(CM_WIN)) {
+      } else if (selected_wm == WIN_10) {
         register_code(KC_LGUI);
         tap_code(KC_TAB);
         unregister_code(KC_LGUI);
@@ -289,17 +302,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     break;
   case WM_PREV_DESK:
     if (record->event.pressed) {
-      if (layer_state_is(CM_NIX)) {
+      if (selected_wm == GNOME_3 || selected_wm == GNOME_40) {
         register_code(KC_LCTL);
         register_code(KC_LALT);
         tap_code(KC_UP);
         unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
-      } else if (layer_state_is(CM_OSX)) {
+      } else if (selected_wm == OSX) {
         register_code(KC_LCTL);
         tap_code(KC_LEFT);
         unregister_code(KC_LCTL);
-      } else if (layer_state_is(CM_WIN)) {
+      } else if (selected_wm == WIN_10) {
         register_code(KC_LCTL);
         register_code(KC_LGUI);
         tap_code(KC_LEFT);
@@ -311,17 +324,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     break;
   case WM_NEXT_DESK:
     if (record->event.pressed) {
-      if (layer_state_is(CM_NIX)) {
+      if (selected_wm == GNOME_3 || selected_wm == GNOME_40) {
         register_code(KC_LCTL);
         register_code(KC_LALT);
         tap_code(KC_DOWN);
         unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
-      } else if (layer_state_is(CM_OSX)) {
+      } else if (selected_wm == OSX) {
         register_code(KC_LCTL);
         tap_code(KC_RGHT);
         unregister_code(KC_LCTL);
-      } else if (layer_state_is(CM_WIN)) {
+      } else if (selected_wm == WIN_10) {
         register_code(KC_LCTL);
         register_code(KC_LGUI);
         tap_code(KC_RGHT);
@@ -381,20 +394,15 @@ void oled_task_user(void) {
   if (is_keyboard_master()) {
     char disp[(21*4)+1] = {0};
     // static char layer_names[DTK_NUM_OF_LAYERS][25] = {"Colemak on Linux", "Colemak on OSX", "Colemak on Win 10", "QWERTY", "Numbers and Arrows", "Fn Keys and Nav", "Symbols", "Grave and Brackets", "Tilde and Curly Brackets", "Window Manager on Linux", "Window Manager on OSX", "Window Manager on Win 10", "Num Block", "Layers n Lights"};
-    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak Linux", "Colemak OSX", "Colemak Win10", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "WM Linux", "WM OSX", "WM WIN", "Numpad", "Layers + Lite"};
-    static char l1[] = "                \x94\x95\x96\x97";
-    static char l2[] = "                \xB4\xB5\xB6\xB7";
-    static char r1[] = "                \x98\x99\x9A\x9B";
-    static char r2[] = "                \xB8\xB9\xBA\xBB";
-    int space = kp % STEP;
-    if (space > STEP / 2) space = STEP - space;
-    if (kp < STEP / 2) {
-      snprintf(disp, 84, "Layer: %s\n\n%s\n%s\n",
-               layer_names[get_highest_layer(layer_state)], l1 + space, l2 + space);
-    } else {
-      snprintf(disp, 84, "Layer: %s\n\n%s\n%s\n",
-               layer_names[get_highest_layer(layer_state)], r1 + space, r2 + space);
-    }
+    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "Window Managr", "Numpad", "Layers + Lite"};
+    static char wm_names[NUM_SUPPORTED_WMS][10] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
+    snprintf(
+        disp,
+        84, 
+        "Layer: %s\nWindow Mgr: %s\n",
+        layer_names[get_highest_layer(layer_state)],
+        wm_names[selected_wm]
+    );
     oled_write(disp, false);
   } else {
     static char *logo = "\n"
