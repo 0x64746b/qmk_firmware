@@ -15,11 +15,8 @@
  */
 #include QMK_KEYBOARD_H
 
-
 #ifdef OLED_DRIVER_ENABLE
 #include <stdio.h>
-#define STEP 32
-uint8_t kp = 0;
 #endif
 
 enum window_manager {
@@ -35,11 +32,7 @@ enum window_manager selected_wm = GNOME_3;
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
-    QWERTY = SAFE_RANGE,
-    LOWER,
-    RAISE,
-    KC_LRST,
-    WM_GNOME_3,
+    WM_GNOME_3 = SAFE_RANGE,
     WM_GNOME_40,
     WM_OSX,
     WM_WIN_10,
@@ -48,36 +41,8 @@ enum custom_keycodes {
     WM_NEXT_DESK,
 };
 
-#define KC_LOW LOWER
-#define KC_RAI RAISE
-#define KC_ KC_NO
 #define KC_____ KC_TRNS
 #define KC_XXXX KC_NO
-
-#define KC_LSPC LT(_LOWER, KC_SPC)
-#define KC_RSPC LT(_RAISE, KC_SPC)
-
-#define KC_MDEL CMD_T(KC_DEL)
-#define KC_CTAB CTL_T(KC_TAB)
-#define KC_SENT SFT_T(KC_ENT)
-#define KC_STAB SFT_T(KC_TAB)
-#define KC_ABSP ALT_T(KC_BSPC)
-
-#define KC_CDEL CTL_T(KC_DEL)
-
-#define KC_VU KC__VOLUP
-#define KC_VD KC__VOLDOWN
-#define KC_MU KC__MUTE
-
-#define KC_LTOG RGB_TOG
-#define KC_LMOF RGB_MOD
-#define KC_LMOP RGB_RMOD
-#define KC_LHUI RGB_HUI
-#define KC_LHUD RGB_HUD
-#define KC_LVAI RGB_VAI
-#define KC_LVAD RGB_VAD
-#define KC_LSAI RGB_SAI
-#define KC_LSAD RGB_SAD
 
 // dtk
 #define ____  KC_TRNS
@@ -139,16 +104,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
-
   [QWERTY_] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     TAB , Q  , W  , E  , R  , T  ,                          Y  , U  , I  , O  , P  ,MINS,
+     ____, Q  , W  , E  , R  , T  ,                          Y  , U  , I  , O  , P  ,MINS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     LCTL, A  , S  , D  , F  , G  ,                          H  , J  , K  , L  ,SCLN,QUOT,
+     ____, A  , S  , D  , F  , G  ,                          H  , J  , K  , L  ,SCLN,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-           Z  , X  , C  , V  , B  ,                          N  , M  ,COMM,DOT ,SLSH,
+           Z_ , X  , C  , V  , B  ,                          N  , M  ,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         LALT,LCMD,LSPC,LSFT,     CDEL,RSPC,SENT,ABSP
+                         ____,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -344,42 +308,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     }
     break;
-  case KC_LRST:
-    if (record->event.pressed) {
-#ifdef RGBLIGHT_ENABLE
-      eeconfig_update_rgblight_default();
-      rgblight_enable();
-#endif
-    }
-    break;
-  case QWERTY:
-    if (record->event.pressed) {
-      set_single_persistent_default_layer(_QWERTY);
-    }
-    return false;
-    break;
-  case LOWER:
-    if (record->event.pressed) {
-      layer_on(_LOWER);
-    } else {
-      layer_off(_LOWER);
-    }
-    return false;
-    break;
-  case RAISE:
-    if (record->event.pressed) {
-      layer_on(_RAISE);
-    } else {
-      layer_off(_RAISE);
-    }
-    return false;
-    break;
   }
-#ifdef OLED_DRIVER_ENABLE
-  if (record->event.pressed) {
-    kp = (kp + 1) % STEP;
-  }
-#endif
   return true;
 }
 
@@ -450,12 +379,6 @@ void oled_task_user(void) {
         rgb_names[rgblight_get_mode()]
     );
     oled_write(disp, false);
-  } else {
-    static char *logo = "\n"
-      "\x8f\x90\x91\x92\x93\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\n"
-      "\xaf\xb0\xb1\xb2\xb3\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\n"
-      "\xcf\xd0\xd1\xd2\xd3\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\n";
-    oled_write(logo, false);
   }
 }
 #endif
