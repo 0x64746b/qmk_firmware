@@ -30,6 +30,39 @@ enum window_manager {
 
 enum window_manager selected_wm = GNOME_3;
 
+const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
+    UCIS_SYM("smile", 0x1F604),
+    UCIS_SYM("catsmile", 0x1F638),
+    UCIS_SYM("grin", 0x1F601),
+    UCIS_SYM("shrug", 0x1F937),
+    UCIS_SYM("expression", 0x1F611),
+    UCIS_SYM("zany", 0x1F92A),
+    UCIS_SYM("facepalm", 0x1F926),
+    UCIS_SYM("roll", 0x1F644),
+    UCIS_SYM("grim", 0x1F62C),
+    UCIS_SYM("hug", 0x1F917),
+    UCIS_SYM("giggle", 0x1F92D),
+    UCIS_SYM("exploding", 0x1F92F),
+    UCIS_SYM("starstruck", 0x1F929),
+    UCIS_SYM("scream", 0x1F631),
+    UCIS_SYM("catscream", 0x1F640),
+    UCIS_SYM("thumbsup", 0x1F44D),
+    UCIS_SYM("thinking", 0x1F914),
+    UCIS_SYM("monocle", 0x1F9D0),
+    UCIS_SYM("eyebrow", 0x1F928),
+    UCIS_SYM("bulb", 0x1F4A1),
+    UCIS_SYM("imp", 0x1F608),
+    UCIS_SYM("raised", 0x1F64C),
+    UCIS_SYM("muscle", 0x1F4AA),
+    UCIS_SYM("eyes", 0x1F400),
+    UCIS_SYM("worker", 0x1F477),
+    UCIS_SYM("guard", 0x1F482),
+    UCIS_SYM("student", 0x1F9D1, 0x200D, 0x1F393),
+    UCIS_SYM("warn", 0x26A0, 0xFE0F),
+    UCIS_SYM("rotating", 0x1F6A8),
+    UCIS_SYM("mega", 0x1F4E3)
+);
+
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
     WM_GNOME_3 = SAFE_RANGE,
@@ -39,6 +72,7 @@ enum custom_keycodes {
     WM_EXPOSEE,
     WM_PREV_DESK,
     WM_NEXT_DESK,
+    WM_EMOJI,
 };
 
 #define KC_____ KC_TRNS
@@ -74,11 +108,14 @@ enum custom_keycodes {
 #define KC_WM LT(WM, WM_EXPOSEE)
 #define KC_PRVD WM_PREV_DESK
 #define KC_NXTD WM_NEXT_DESK
+#define KC_EMJI WM_EMOJI
+#define KC_NXTU UC_MOD
 
 // Layer declarations
 enum {
   COLEMK = 0,
   QWERTY_,
+  UNICODE,
   NUM_ARR,
   FN_NAV,
   SYMBLS,
@@ -113,6 +150,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
            Z_ , X  , C  , V  , B  ,                          N  , M  ,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
                          ____,____,____,____,     ____,____,____,____
+  //                    `----+----+----+----'    `----+----+----+----'
+  ),
+
+  [UNICODE] = LAYOUT_kc( \
+  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
+     ____,____,____, F  , P  ,____,                         ____, L  , U  ,____,____,____,
+  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
+     ____, A  , R  , S  , T  , G  ,                          M  , N  , E  , I  , O  ,____,
+  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
+           Z  ,____,____, D  ,____,                         ____, H  ,____,____,____,
+  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
+                         ____,BSPC,____,____,     ____,ENT ,SPC ,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -176,12 +225,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
-
   [WM] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     GNM3,GNM4,OSX ,WIN ,____,____,                         ____,____,____,____,____,____,
+     GNM3,GNM4,OSX ,WIN ,____,____,                         ____,____,EMJI,____,____,____,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         PRVD,NXTD,PRVD,NXTD,____,____,
+     ____,____,____,____,____,____,                         PRVD,NXTD,PRVD,NXTD,____,NXTU,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
@@ -321,8 +369,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     }
     break;
+  case WM_EMOJI:
+    if (record->event.pressed) {
+        layer_on(UNICODE);
+        qk_ucis_start();
+    }
+    return false;
   }
   return true;
+}
+
+void qk_ucis_success(uint8_t symbol_index) {
+    layer_off(UNICODE);
+}
+
+void qk_ucis_symbol_fallback(void) {
+    layer_off(UNICODE);
 }
 
 void matrix_init_user(void) {}
@@ -336,7 +398,7 @@ void oled_task_user(void) {
   if (is_keyboard_master()) {
     char disp[(21*4)+1] = {0};
     // static char layer_names[DTK_NUM_OF_LAYERS][25] = {"Colemak on Linux", "Colemak on OSX", "Colemak on Win 10", "QWERTY", "Numbers and Arrows", "Fn Keys and Nav", "Symbols", "Grave and Brackets", "Tilde and Curly Brackets", "Window Manager on Linux", "Window Manager on OSX", "Window Manager on Win 10", "Num Block", "Layers n Lights"};
-    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "Window Managr", "Numpad", "Layers + Lite"};
+    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Unicode", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "Window Managr", "Numpad", "Layers + Lite"};
     static char wm_names[NUM_SUPPORTED_WMS][10] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
     static char rgb_names[22][16] = {
         "Off",
@@ -386,9 +448,10 @@ void oled_task_user(void) {
     snprintf(
         disp,
         84,
-        "Layer: %s\nWindow Mgr: %s\nRGB: %s\n",
+        "Layer: %s\nWindow Mgr: %s\nUnicode: %u\nRGB: %s\n",
         layer_names[get_highest_layer(layer_state)],
         wm_names[selected_wm],
+        get_unicode_input_mode(),
         rgb_names[rgblight_get_mode()]
     );
     oled_write(disp, false);
