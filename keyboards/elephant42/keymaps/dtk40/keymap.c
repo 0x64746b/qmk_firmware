@@ -26,9 +26,7 @@ enum window_manager {
     WIN_10,
 
     NUM_SUPPORTED_WMS,
-};
-
-enum window_manager selected_wm = GNOME_3;
+} selected_wm = GNOME_3;
 
 const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
     UCIS_SYM("smile", 0x1F604),
@@ -109,7 +107,6 @@ enum custom_keycodes {
 #define KC_PRVD WM_PREV_DESK
 #define KC_NXTD WM_NEXT_DESK
 #define KC_EMJI WM_EMOJI
-#define KC_NXTU UC_MOD
 
 // Layer declarations
 enum {
@@ -216,7 +213,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
      GNM3,GNM4,OSX ,WIN ,____,____,                         ____,____,EMJI,____,____,____,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         PRVD,NXTD,PRVD,NXTD,____,NXTU,
+     ____,____,____,____,____,____,                         PRVD,NXTD,PRVD,NXTD,____,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
@@ -284,21 +281,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case WM_GNOME_3:
     if (record->event.pressed) {
         selected_wm=GNOME_3;
+        set_unicode_input_mode(UC_LNX);
     }
     return false;
   case WM_GNOME_40:
     if (record->event.pressed) {
         selected_wm=GNOME_40;
+        set_unicode_input_mode(UC_LNX);
     }
     return false;
   case WM_OSX:
     if (record->event.pressed) {
         selected_wm=OSX;
+        set_unicode_input_mode(UC_MAC);
     }
     return false;
   case WM_WIN_10:
     if (record->event.pressed) {
         selected_wm=WIN_10;
+        set_unicode_input_mode(UC_WINC);
     }
     return false;
   case LT(WM, WM_EXPOSEE):
