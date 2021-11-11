@@ -115,7 +115,6 @@ enum custom_keycodes {
 enum {
   COLEMK = 0,
   QWERTY_,
-  UNICODE,
   NUM_ARR,
   FN_NAV,
   SYMBLS,
@@ -150,18 +149,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
            Z_ , X  , C  , V  , B  ,                          N  , M  ,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
                          ____,____,____,____,     ____,____,____,____
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
-
-  [UNICODE] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____, F  , P  ,____,                         ____, L  , U  ,____,____,____,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____, A  , R  , S  , T  , G  ,                          M  , N  , E  , I  , O  ,____,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-           Z  ,____,____, D  ,____,                         ____, H  ,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,BSPC,____,____,     ____,ENT ,SPC ,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -288,6 +275,11 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (qk_ucis_state.in_progress && record->event.pressed) {
+      process_unicode_common(keycode & 255, record); // Strip all the fancy mod tap info, send only the basic keycode
+      tap_code(keycode);
+      return false;
+  }
   switch (keycode) {
   case WM_GNOME_3:
     if (record->event.pressed) {
@@ -371,20 +363,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     break;
   case WM_EMOJI:
     if (record->event.pressed) {
-        layer_on(UNICODE);
         qk_ucis_start();
     }
     return false;
   }
   return true;
-}
-
-void qk_ucis_success(uint8_t symbol_index) {
-    layer_off(UNICODE);
-}
-
-void qk_ucis_symbol_fallback(void) {
-    layer_off(UNICODE);
 }
 
 void matrix_init_user(void) {}
@@ -397,8 +380,7 @@ void led_set_user(uint8_t usb_led) {}
 void oled_task_user(void) {
   if (is_keyboard_master()) {
     char disp[(21*4)+1] = {0};
-    // static char layer_names[DTK_NUM_OF_LAYERS][25] = {"Colemak on Linux", "Colemak on OSX", "Colemak on Win 10", "QWERTY", "Numbers and Arrows", "Fn Keys and Nav", "Symbols", "Grave and Brackets", "Tilde and Curly Brackets", "Window Manager on Linux", "Window Manager on OSX", "Window Manager on Win 10", "Num Block", "Layers n Lights"};
-    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Unicode", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "Window Managr", "Numpad", "Layers + Lite"};
+    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "Window Managr", "Numpad", "Layers + Lite"};
     static char wm_names[NUM_SUPPORTED_WMS][10] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
     static char rgb_names[22][16] = {
         "Off",
