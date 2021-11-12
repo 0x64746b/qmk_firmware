@@ -73,32 +73,35 @@ enum custom_keycodes {
     WM_EMOJI,
 };
 
+#define ____  KC_TRNS
 #define KC_____ KC_TRNS
 #define KC_XXXX KC_NO
 
 // dtk
-#define ____  KC_TRNS
+//  Colemak-DH
 #define KC_F_ LT(TLD_CBR, KC_F)
-#define KC_U_ LT(TLD_CBR, KC_U)
 #define KC_P_ LT(GRV_BRC, KC_P)
-#define KC_L_ LT(GRV_BRC, KC_L)
 #define KC_A_ LALT_T(KC_A)
-#define KC_O_ LALT_T(KC_O)
 #define KC_R_ LGUI_T(KC_R)
-#define KC_I_ RGUI_T(KC_I)
 #define KC_S_ LCTL_T(KC_S)
-#define KC_E_ RCTL_T(KC_E)
 #define KC_T_ LSFT_T(KC_T)
-#define KC_N_ RSFT_T(KC_N)
 #define KC_G_ LT(NUM_BLK, KC_G)
-#define KC_M_ LT(NUM_BLK, KC_M)
 #define KC_Z_ LT(LAY_LIT, KC_Z)
 #define KC_D_ LT(SYMBLS, KC_D)
+#define KC_L_ LT(GRV_BRC, KC_L)
+#define KC_U_ LT(TLD_CBR, KC_U)
+#define KC_M_ LT(NUM_BLK, KC_M)
+#define KC_N_ RSFT_T(KC_N)
+#define KC_E_ RCTL_T(KC_E)
+#define KC_I_ RGUI_T(KC_I)
+#define KC_O_ LALT_T(KC_O)
 #define KC_H_ LT(SYMBLS, KC_H)
 #define KC_BSP_ LT(NUM_ARR, KC_BSPC)
 #define KC_SPC_ LT(NUM_ARR, KC_SPC)
 #define KC_DEL_ LT(FN_NAV, KC_DEL)
 #define KC_ENT_ LT(FN_NAV, KC_ENT)
+
+//  Window Manager
 #define KC_GNM3 WM_GNOME_3
 #define KC_GNM4 WM_GNOME_40
 #define KC_OSX WM_OSX
@@ -107,6 +110,22 @@ enum custom_keycodes {
 #define KC_PRVD WM_PREV_DESK
 #define KC_NXTD WM_NEXT_DESK
 #define KC_EMJI WM_EMOJI
+
+//  QWERTY
+#define KC_E__ LT(TLD_CBR, KC_E)
+#define KC_R__ LT(GRV_BRC, KC_R)
+#define KC_S__ LGUI_T(KC_S)
+#define KC_D__ LCTL_T(KC_D)
+#define KC_F__ LSFT_T(KC_F)
+#define KC_V__ LT(SYMBLS, KC_V)
+#define KC_U__ LT(GRV_BRC, KC_U)
+#define KC_I__ LT(TLD_CBR, KC_I)
+#define KC_H__ LT(NUM_BLK, KC_H)
+#define KC_J__ RSFT_T(KC_J)
+#define KC_K__ RCTL_T(KC_K)
+#define KC_L__ RGUI_T(KC_L)
+#define KC_SC__ LALT_T(KC_SCLN)
+#define KC_M__ LT(SYMBLS, KC_M)
 
 // Layer declarations
 enum {
@@ -139,11 +158,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [QWERTY_] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____, Q  , W  , E  , R  , T  ,                          Y  , U  , I  , O  , P  ,MINS,
+     ____, Q  , W  , E__, R__, T  ,                          Y  , U__, I__, O  , P  ,MINS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____, A  , S  , D  , F  , G  ,                          H  , J  , K  , L  ,SCLN,____,
+     ____, A_ , S__, D__, F__, G_ ,                          H__, J__, K__, L__,SC__,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-           Z_ , X  , C  , V  , B  ,                          N  , M  ,____,____,____,
+           Z_ , X  , C  , V__, B  ,                          N  , M__,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
                          ____,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
