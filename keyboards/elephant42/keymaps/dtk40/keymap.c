@@ -19,14 +19,14 @@
 #include <stdio.h>
 #endif
 
-enum window_manager {
+enum {
     GNOME_3 = 0,
     GNOME_40,
     OSX,
     WIN_10,
 
     NUM_SUPPORTED_WMS,
-} selected_wm = GNOME_3;
+} window_manager = GNOME_3;
 
 const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
     UCIS_SYM("smile", 0x1F604),
@@ -299,84 +299,99 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
   case WM_GNOME_3:
     if (record->event.pressed) {
-        selected_wm=GNOME_3;
+        window_manager=GNOME_3;
         set_unicode_input_mode(UC_LNX);
     }
     return false;
   case WM_GNOME_40:
     if (record->event.pressed) {
-        selected_wm=GNOME_40;
+        window_manager=GNOME_40;
         set_unicode_input_mode(UC_LNX);
     }
     return false;
   case WM_OSX:
     if (record->event.pressed) {
-        selected_wm=OSX;
+        window_manager=OSX;
         set_unicode_input_mode(UC_MAC);
     }
     return false;
   case WM_WIN_10:
     if (record->event.pressed) {
-        selected_wm=WIN_10;
+        window_manager=WIN_10;
         set_unicode_input_mode(UC_WINC);
     }
     return false;
   case LT(WM, WM_EXPOSEE):
     if (record->tap.count && record->event.pressed) {
-      if (selected_wm == GNOME_3 || selected_wm == GNOME_40) {
+      switch (window_manager) {
+      case GNOME_3 ... GNOME_40:
         tap_code(KC_LGUI);
-      } else if (selected_wm == OSX) {
+        break;
+      case OSX:
         register_code(KC_LCTL);
         tap_code(KC_UP);
         unregister_code(KC_LCTL);
-      } else if (selected_wm == WIN_10) {
+        break;
+      case WIN_10:
         register_code(KC_LGUI);
         tap_code(KC_TAB);
         unregister_code(KC_LGUI);
+        break;
+      default: break;
       }
       return false;
     }
     break;
   case WM_PREV_DESK:
     if (record->event.pressed) {
-      if (selected_wm == GNOME_3 || selected_wm == GNOME_40) {
+      switch (window_manager) {
+      case GNOME_3 ... GNOME_40:
         register_code(KC_LCTL);
         register_code(KC_LALT);
         tap_code(KC_UP);
         unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
-      } else if (selected_wm == OSX) {
+        break;
+      case OSX:
         register_code(KC_LCTL);
         tap_code(KC_LEFT);
         unregister_code(KC_LCTL);
-      } else if (selected_wm == WIN_10) {
+        break;
+      case WIN_10:
         register_code(KC_LCTL);
         register_code(KC_LGUI);
         tap_code(KC_LEFT);
         unregister_code(KC_LGUI);
         unregister_code(KC_LCTL);
+        break;
+      default: break;
       }
       return false;
     }
     break;
   case WM_NEXT_DESK:
     if (record->event.pressed) {
-      if (selected_wm == GNOME_3 || selected_wm == GNOME_40) {
+      switch (window_manager) {
+      case GNOME_3 ... GNOME_40:
         register_code(KC_LCTL);
         register_code(KC_LALT);
         tap_code(KC_DOWN);
         unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
-      } else if (selected_wm == OSX) {
+        break;
+      case OSX:
         register_code(KC_LCTL);
         tap_code(KC_RGHT);
         unregister_code(KC_LCTL);
-      } else if (selected_wm == WIN_10) {
+        break;
+      case WIN_10:
         register_code(KC_LCTL);
         register_code(KC_LGUI);
         tap_code(KC_RGHT);
         unregister_code(KC_LGUI);
         unregister_code(KC_LCTL);
+        break;
+      default: break;
       }
       return false;
     }
@@ -452,7 +467,7 @@ void oled_task_user(void) {
         84,
         "Layer: %s\nWindow Mgr: %s\nUnicode: %u\nRGB: %s\n",
         layer_names[get_highest_layer(layer_state)],
-        wm_names[selected_wm],
+        wm_names[window_manager],
         get_unicode_input_mode(),
         rgb_names[rgblight_get_mode()]
     );
