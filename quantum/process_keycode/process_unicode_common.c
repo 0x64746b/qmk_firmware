@@ -100,6 +100,7 @@ __attribute__((weak)) void unicode_input_start(void) {
             break;
         case UC_WIN:
             register_code(KC_LALT);
+            wait_ms(UNICODE_TYPE_DELAY);
             tap_code(KC_PPLS);
             break;
         case UC_WINC:
@@ -158,7 +159,7 @@ __attribute__((weak)) void unicode_input_cancel(void) {
 void register_hex(uint16_t hex) {
     for (int i = 3; i >= 0; i--) {
         uint8_t digit = ((hex >> (i * 4)) & 0xF);
-        tap_code16(hex_to_keycode(digit));
+        send_nibble(digit);
     }
 }
 
@@ -171,10 +172,10 @@ void register_hex32(uint32_t hex) {
         uint8_t digit = ((hex >> (i * 4)) & 0xF);
         if (digit == 0) {
             if (!onzerostart) {
-                tap_code16(hex_to_keycode(digit));
+                send_nibble(digit);
             }
         } else {
-            tap_code16(hex_to_keycode(digit));
+            send_nibble(digit);
             onzerostart = false;
         }
     }
