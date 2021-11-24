@@ -79,8 +79,6 @@ enum custom_keycodes {
 
 // dtk
 //  Colemak-DH
-#define KC_F_ LT(TLD_CBR, KC_F)
-#define KC_P_ LT(GRV_BRC, KC_P)
 #define KC_A_ LALT_T(KC_A)
 #define KC_R_ LGUI_T(KC_R)
 #define KC_S_ LCTL_T(KC_S)
@@ -88,8 +86,6 @@ enum custom_keycodes {
 #define KC_G_ LT(NUM_BLK, KC_G)
 #define KC_Z_ LT(LAY_LIT, KC_Z)
 #define KC_D_ LT(SYMBLS, KC_D)
-#define KC_L_ LT(GRV_BRC, KC_L)
-#define KC_U_ LT(TLD_CBR, KC_U)
 #define KC_M_ LT(NUM_BLK, KC_M)
 #define KC_N_ RSFT_T(KC_N)
 #define KC_E_ RCTL_T(KC_E)
@@ -112,14 +108,10 @@ enum custom_keycodes {
 #define KC_EMJI WM_EMOJI
 
 //  QWERTY
-#define KC_E__ LT(TLD_CBR, KC_E)
-#define KC_R__ LT(GRV_BRC, KC_R)
 #define KC_S__ LGUI_T(KC_S)
 #define KC_D__ LCTL_T(KC_D)
 #define KC_F__ LSFT_T(KC_F)
 #define KC_V__ LT(SYMBLS, KC_V)
-#define KC_U__ LT(GRV_BRC, KC_U)
-#define KC_I__ LT(TLD_CBR, KC_I)
 #define KC_H__ LT(NUM_BLK, KC_H)
 #define KC_J__ RSFT_T(KC_J)
 #define KC_K__ RCTL_T(KC_K)
@@ -134,8 +126,6 @@ enum {
   NUM_ARR,
   FN_NAV,
   SYMBLS,
-  GRV_BRC,
-  TLD_CBR,
   WM,
   NUM_BLK,
   LAY_LIT,
@@ -146,7 +136,7 @@ enum {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [COLEMK] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     TAB , Q  , W  , F_ , P_ , B  ,                          J  , L_ , U_ , Y  ,SCLN,BSLS,
+     TAB , Q  , W  , F  , P  , B  ,                          J  , L  , U  , Y  ,SCLN,BSLS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
      ESC , A_ , R_ , S_ , T_ , G_ ,                          M_ , N_ , E_ , I_ , O_ ,QUOT,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
@@ -158,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [QWERTY_] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____, Q  , W  , E__, R__, T  ,                          Y  , U__, I__, O  , P  ,MINS,
+     ____, Q  , W  , E  , R  , T  ,                          Y  , U  , I  , O  , P  ,MINS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
      ____, A_ , S__, D__, F__, G_ ,                          H__, J__, K__, L__,SC__,____,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
@@ -184,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
       F1 , F2 , F3 , F4 , F5 , F6 ,                          F7 , F8 , F9 ,F10 ,F11 ,F12 ,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     TILD,XXXX,XXXX,XXXX,XXXX,XXXX,                         HOME,PGDN,PGUP,END ,LCBR,RCBR,
+     XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,                         HOME,PGDN,PGUP,END ,XXXX,XXXX,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         XXXX,XXXX,XXXX,XXXX,XXXX,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
@@ -196,31 +186,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
      EXLM, AT ,HASH,DLR ,PERC,CIRC,                         AMPR,ASTR,LPRN,RPRN,UNDS,PLUS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,                         XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         ____,____,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
-
-  [GRV_BRC] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     GRV ,XXXX,XXXX,XXXX,XXXX,XXXX,                         XXXX,XXXX,XXXX,XXXX,LBRC,RBRC,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,                         XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,
-  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         ____,____,____,____,____,
-  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
-  //                    `----+----+----+----'    `----+----+----+----'
-  ),
-
-  [TLD_CBR] = LAYOUT_kc( \
-  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
      TILD,XXXX,XXXX,XXXX,XXXX,XXXX,                         XXXX,XXXX,XXXX,XXXX,LCBR,RCBR,
-  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,                         XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
           ____,____,____,____,____,                         ____,____,____,____,____,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
@@ -415,7 +381,7 @@ void led_set_user(uint8_t usb_led) {}
 void oled_task_user(void) {
   if (is_keyboard_master()) {
     char disp[(21*4)+1] = {0};
-    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Grv + Square", "Tilde + Curly", "Window Managr", "Numpad", "Layers + Lite"};
+    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Window Managr", "Numpad", "Layers + Lite"};
     static char wm_names[NUM_SUPPORTED_WMS][10] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
     static char rgb_names[22][16] = {
         "Off",
