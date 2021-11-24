@@ -465,10 +465,11 @@ void oled_task_user(void) {
     snprintf(
         disp,
         84,
-        "Layer: %s\nWindow Mgr: %s\nUnicode: %u\nRGB: %s\n",
+        "Layer: %s\nWindow Mgr: %s\nUnicode: %u | %s\nRGB: %s\n",
         layer_names[get_highest_layer(layer_state)],
         wm_names[window_manager],
         get_unicode_input_mode(),
+        qk_ucis_state.in_progress ? "on" : "off",
         rgb_names[rgblight_get_mode()]
     );
     oled_write(disp, false);
