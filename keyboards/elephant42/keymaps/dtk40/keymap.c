@@ -15,7 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-#ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_ENABLE
 #include <stdio.h>
 #endif
 
@@ -411,7 +411,7 @@ void matrix_scan_user(void) {}
 
 void led_set_user(uint8_t usb_led) {}
 
-#ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_ENABLE
 void oled_task_user(void) {
   if (is_keyboard_master()) {
     char disp[(21*4)+1] = {0};
