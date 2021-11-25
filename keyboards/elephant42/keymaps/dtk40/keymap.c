@@ -96,6 +96,16 @@ enum custom_keycodes {
 #define KC_DEL_ LT(FN_NAV, KC_DEL)
 #define KC_ENT_ LT(FN_NAV, KC_ENT)
 
+//  Custom 3x5
+#define KC_D___ LT(SYM3X5, KC_D)
+#define KC_H__ LT(SYM3X5, KC_H)
+#define KC_BS__ LT(NUM_BLK, KC_BSPC)
+#define KC_ESC_ LT(NUM_ARR, KC_ESC)
+#define KC_ET__ LT(FN_BLK, KC_ENT)
+#define KC_SP__ LT(NUM_BLK, KC_SPC)
+#define KC_TAB_ LT(COMPOSE, KC_TAB)
+#define KC_NAV  LT(FN_NAV, KC_NO)
+
 //  Window Manager
 #define KC_GNM3 WM_GNOME_3
 #define KC_GNM4 WM_GNOME_40
@@ -117,18 +127,30 @@ enum custom_keycodes {
 #define KC_SC__ LALT_T(KC_SCLN)
 #define KC_M__ LT(SYMBLS, KC_M)
 
+//  COMPOSE
+#define KC_AE RALT(KC_Q)
+#define KC_SZ RALT(KC_S)
+#define KC_EE RALT(KC_E)
+#define KC_IE RALT(KC_I)
+#define KC_UE RALT(KC_Y)
+#define KC_OE RALT(KC_P)
+
 // Layer declarations
 enum {
   COLEMK = 0,
-  QWERTY_,
+  DTK3X5,
+  QWERTY,
   NUM_ARR,
   FN_NAV,
   SYMBLS,
   WM,
   NUM_BLK,
+  SYM3X5,
+  FN_BLK,
+  COMPOSE,
   LAY_LIT,
 
-  DTK_NUM_OF_LAYERS
+  NUM_LAYERS
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -144,7 +166,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
-  [QWERTY_] = LAYOUT_kc( \
+  [DTK3X5] = LAYOUT_kc( \
+  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
+     XXXX, Q  , W  , F  , P  , B  ,                          J  , L  , U  , Y  ,SCLN,XXXX,
+  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
+     XXXX, A_ , R_ , S_ , T_ , G_ ,                          M  , N_ , E_ , I_ , O_ ,XXXX,
+  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
+           Z_ , X  , C  ,D___, V  ,                          K  , H__,COMM,DOT ,SLSH,
+  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
+                          WM ,BS__,ESC_,XXXX,     XXXX,ET__,SP__,TAB_
+  //                    `----+----+----+----'    `----+----+----+----'
+  ),
+
+  [QWERTY] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
      ____, Q  , W  , E  , R  , T  ,                          Y  , U  , I  , O  , P  ,MINS,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
@@ -160,11 +194,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
       1  , 2  , 3  , 4  , 5  , 6  ,                          7  , 8  , 9  , 0  ,MINS,EQL ,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     GRV ,XXXX,XXXX,XXXX,CAPS,XXXX,                         LEFT,DOWN, UP ,RGHT,LBRC,RBRC,
+     GRV ,____,____,____,____,XXXX,                         LEFT,DOWN, UP ,RGHT,LBRC,RBRC,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         XXXX,XXXX,XXXX,XXXX,XXXX,
+          ____,____,____,NAV ,____,                         XXXX,XXXX,XXXX,XXXX,XXXX,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____,____,____
+                         ____,DEL ,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
@@ -207,16 +241,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [NUM_BLK] = LAYOUT_kc( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
-     ____,____,____,____,____,____,                         XXXX, 7  , 8  , 9  ,____,____,
+     XXXX,____,____,____,____,____,                         XXXX, 7  , 8  , 9  ,MINS,XXXX,
   //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
-     ____,____,____,____,____,____,                         XXXX, 4  , 5  , 6  ,____,____,
+     XXXX,____,QUOT,____,CAPS,____,                         XXXX, 4  , 5  , 6  ,EQL ,XXXX,
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
-          ____,____,____,____,____,                         XXXX, 1  , 2  , 3  ,____,
+          GRV ,____,____,____,____,                         XXXX, 1  , 2  , 3  ,BSLS,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                         ____,____,____,____,     ____,____, 0  ,____
+                         ____,DEL ,____,____,     ____,____, 0  ,____
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
+  [SYM3X5] = LAYOUT_kc( \
+  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
+     XXXX, AT ,HASH,DLR ,PERC,CIRC,                         AMPR,ASTR,LPRN,RPRN,UNDS,XXXX,
+  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
+     XXXX,EXLM,DQUO,XXXX,XXXX,XXXX,                         XXXX,XXXX,LCBR,RCBR,PLUS,XXXX,
+  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
+          TILD,____,____,____,____,                         ____,____,LBRC,RBRC,PIPE,
+  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
+                         ____,____,____,____,     ____,____,____,____
+  //                    `----+----+----+----'    `----+----+----+----'
+  ),
+
+  [FN_BLK] = LAYOUT_kc( \
+  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
+     XXXX,____, F4 , F3 , F2 , F1 ,                         ____,____,____,____,____,XXXX,
+  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
+     XXXX,____, F8 , F7 , F6 , F5 ,                         ____,____,____,____,____,XXXX,
+  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
+          ____, F12, F11, F10, F9 ,                         ____,____,____,____,____,
+  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
+                         ____,____,____,____,     ____,____,____,____
+  //                    `----+----+----+----'    `----+----+----+----'
+  ),
+
+  [COMPOSE] = LAYOUT_kc( \
+  //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
+     ____, AE ,____,____,____,____,                         ____,____,____, UE , OE ,____,
+  //|----+----+----+----+----+----|                        |----+----+----+----+----+----|
+     ____,____,____, SZ ,____,____,                         ____,____, EE , IE ,____,____,
+  //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
+          ____,____,____,____,____,                         ____,____,____,____,____,
+  //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
+                         ____,____,____,____,     ____,____,____,____
+  //                    `----+----+----+----'    `----+----+----+----'
+  ),
 
   [LAY_LIT] = LAYOUT( \
   //,----+----+----+----+----+----.                        ,----+----+----+----+----+----.
@@ -240,7 +309,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
                          ____,____,____,____,     ____,____,____,____
   //                    `----+----+----+----'    `----+----+----+----'
-    ),
+  ),
   */
 };
 
@@ -379,7 +448,7 @@ void led_set_user(uint8_t usb_led) {}
 void oled_task_user(void) {
   if (is_keyboard_master()) {
     char content[(21*4)+1];
-    static char* layer_names[NUM_LAYERS] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Window Manager", "Numpad", "Layers + Lite"};
+    static char* layer_names[NUM_LAYERS] = {"Colemak-DH", "dtk 3x5", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Window Manager", "Numpad", "3x5 Symbols", "FN Keys", "Compose", "Layers + Lite"};
     static char* wm_names[NUM_SUPPORTED_WMS] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
     static char* rgb_names[NUM_ENABLED_RGB_EFFECTS] = {
         "Off",
