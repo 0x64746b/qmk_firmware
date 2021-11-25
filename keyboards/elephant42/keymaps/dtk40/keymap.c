@@ -378,10 +378,10 @@ void led_set_user(uint8_t usb_led) {}
 #ifdef OLED_DRIVER_ENABLE
 void oled_task_user(void) {
   if (is_keyboard_master()) {
-    char disp[(21*4)+1] = {0};
-    static char layer_names[DTK_NUM_OF_LAYERS][14] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Window Managr", "Numpad", "Layers + Lite"};
-    static char wm_names[NUM_SUPPORTED_WMS][10] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
-    static char rgb_names[22][16] = {
+    char content[(21*4)+1];
+    static char* layer_names[NUM_LAYERS] = {"Colemak-DH", "QWERTY", "Num + Arrows", "FN Keys + Nav", "Symbols", "Window Manager", "Numpad", "Layers + Lite"};
+    static char* wm_names[NUM_SUPPORTED_WMS] =  {"GNOME 3", "GNOME 40", "OS X", "Win 10"};
+    static char* rgb_names[NUM_ENABLED_RGB_EFFECTS] = {
         "Off",
         "Static",
         // "Breathing 0", "Breathing 1", "Breathing 2", "Breathing 3",
@@ -396,16 +396,16 @@ void oled_task_user(void) {
         // "Twinkle 0", "Twinkle 1", "Twinkle 2", "Twinkle 3", "Twinkle 4", "Twinkle 5"
     };
     snprintf(
-        disp,
-        84,
-        "Layer: %s\nWindow Mgr: %s\nUnicode: %u | %s\nRGB: %s\n",
+        content,
+        85,
+        "Layer: %-14.14sWindow Mgr: %-9.9sUnicode: %u | %-8.8sRGB: %-16.16s",
         layer_names[get_highest_layer(layer_state)],
         wm_names[window_manager],
         get_unicode_input_mode(),
         qk_ucis_state.in_progress ? "on" : "off",
         rgb_names[rgblight_get_mode()]
     );
-    oled_write(disp, false);
+    oled_write(content, false);
   }
 }
 #endif
