@@ -455,13 +455,13 @@ void oled_task_user(void) {
         "Static",
         // "Breathing 0", "Breathing 1", "Breathing 2", "Breathing 3",
         // "Rainbow Mood 0", "Rainbow Mood 1", "Rainbow Mood 2",
-        "Rainbow Swirl 0", "Rainbow Swirl 1", "Rainbow Swirl 2", "Rainbow Swirl 3", "Rainbow Swirl 4", "Rainbow Swirl 5",
+        // "Rainbow Swirl 0", "Rainbow Swirl 1", "Rainbow Swirl 2", "Rainbow Swirl 3", "Rainbow Swirl 4", "Rainbow Swirl 5",
         // "Snake 0", "Snake 1", "Snake 2", "Snake 3", "Snake 4", "Snake 5",
-        "Knight 0", "Knight 1", "Knight 2",
+        // "Knight 0", "Knight 1", "Knight 2",
         // "Christmas",
         "Stat Gradient 0", "Stat Gradient 1", "Stat Gradient 2", "Stat Gradient 3", "Stat Gradient 4", "Stat Gradient 5", "Stat Gradient 6", "Stat Gradient 7", "Stat Gradient 8", "Stat Gradient 9",
         // "RGB Test",
-        "Alternating"
+        // "Alternating"
         // "Twinkle 0", "Twinkle 1", "Twinkle 2", "Twinkle 3", "Twinkle 4", "Twinkle 5"
     };
     snprintf(
