@@ -25,7 +25,7 @@
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
 // place overrides here
-#ifdef OLED_DRIVER_ENABLE
+#ifdef OLED_ENABLE
 #define OLED_FONT_H "keymaps/default/glcdfont.c"
 #endif
 
