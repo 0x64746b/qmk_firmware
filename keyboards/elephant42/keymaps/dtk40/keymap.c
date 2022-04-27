@@ -103,8 +103,8 @@ enum custom_keycodes {
 //  Custom 3x5
 #define KC_D___ LT(SYM3X5, KC_D)
 #define KC_H__ LT(SYM3X5, KC_H)
-#define KC_BS__ LT(NUM_BLK, KC_BSPC)
-#define KC_ESC_ LT(NUM_ARR, KC_ESC)
+#define KC_BS__ LT(NUM_ARR, KC_BSPC)
+#define KC_ESC_ LT(NUM_BLK, KC_ESC)
 #define KC_ET__ LT(FN_BLK, KC_ENT)
 #define KC_SP__ LT(NUM_BLK, KC_SPC)
 #define KC_TAB_ LT(COMPOSE, KC_TAB)
