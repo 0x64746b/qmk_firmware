@@ -104,10 +104,10 @@ enum custom_keycodes {
 #define KC_D___ LT(SYM3X5, KC_D)
 #define KC_H__ LT(SYM3X5, KC_H)
 #define KC_BS__ LT(NUM_ARR, KC_BSPC)
-#define KC_ESC_ LT(NUM_BLK, KC_ESC)
+#define KC_TAB_ LT(NUM_BLK, KC_TAB)
 #define KC_ET__ LT(FN_BLK, KC_ENT)
 #define KC_SP__ LT(NUM_BLK, KC_SPC)
-#define KC_TAB_ LT(COMPOSE, KC_TAB)
+#define KC_ESC_ LT(COMPOSE, KC_ESC)
 #define KC_NAV  LT(FN_NAV, KC_NO)
 
 //  Window Manager
@@ -178,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //`----+----+----+----+----+----|                        |----+----+----+----+----+----'
            Z_ , X  , C  ,D___, V  ,                          K  , H__,COMM,DOT ,SLSH,
   //     `----+----+----+----+----+----+----.    ,----+----+----+----+----+----+----'
-                          WM ,BS__,ESC_,XXXX,     XXXX,ET__,SP__,TAB_
+                          WM ,BS__,TAB_,XXXX,     XXXX,ET__,SP__,ESC_
   //                    `----+----+----+----'    `----+----+----+----'
   ),
 
