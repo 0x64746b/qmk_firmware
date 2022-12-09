@@ -321,30 +321,19 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_T):
         case RSFT_T(KC_N):
-        case LT(COMPOSE, KC_TAB):
+        case LT(COMPOSE, KC_ESC):
             return TAPPING_TERM_SFT;
         default:
             return TAPPING_TERM;
     }
 }
 
-bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    print("Getting permissive hold for key press\n");
-    switch (keycode) {
-        case LT(COMPOSE, KC_TAB):
-            // Immediately select the hold action when another key is tapped.
-            return true;
-        default:
-            // Do not select the hold action when another key is tapped.
-            return false;
-    }
-}
-
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    print("Getting hold for key press\n");
+    print("Checking hold for key press\n");
     switch (keycode) {
-        case LT(COMPOSE, KC_TAB):
+        case LT(COMPOSE, KC_ESC):
             // Immediately select the hold action when another key is pressed.
+            print("  matched\n");
             return true;
         default:
             // Do not select the hold action when another key is pressed.
@@ -468,11 +457,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 //void keyboard_post_init_user(void) {
-  // Customise these values to desired behaviour
-  //debug_enable=true;
-  //debug_matrix=true;
-  //debug_keyboard=true;
-  //debug_mouse=true;
+//  Customise these values to desired behaviour
+//  debug_enable=true;
+//  debug_matrix=true;
+//  debug_keyboard=true;
+//  debug_mouse=true;
 //}
 
 void matrix_init_user(void) {}
